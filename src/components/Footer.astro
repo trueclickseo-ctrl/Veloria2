@@ -1,10 +1,16 @@
 ---
 import { siteConfig } from '../config/site';
+import Newsletter from './Newsletter.astro';
 
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
+  <!-- Newsletter added to footer -->
+  <div class="container footer-newsletter-wrapper">
+    <Newsletter />
+  </div>
+
   <div class="container footer-container">
     <div class="footer-brand-section">
       <h3 class="footer-logo">{siteConfig.siteName}</h3>
@@ -53,10 +59,18 @@ const currentYear = new Date().getFullYear();
     background-color: var(--color-surface);
     border-top: 1px solid var(--color-border);
     padding: 3.5rem 0 2rem 0;
-    margin-top: 4rem;
+    margin-top: 5rem;
     color: var(--color-text-muted);
   }
   
+  .footer-newsletter-wrapper :global(.newsletter-box) {
+    margin: 0 0 3.5rem 0 !important;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 3.5rem;
+    background-color: transparent !important;
+    border: none !important;
+  }
+
   .footer-container {
     display: grid;
     grid-template-columns: 1fr;

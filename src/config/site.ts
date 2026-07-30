@@ -60,10 +60,10 @@ export const siteConfig: SiteConfig = {
     primaryHover: "#2d2d2d",   // Soft charcoal
     secondary: "#78350f",      // Warm amber/brown
     accent: "#881337",         // Deep editorial rose/burgundy
-    background: "#fbfbf9",     // Elegant warm cream paper tone
+    background: "#f4f1ea",     // Rich warm-cream paper tone (distinct from white)
     text: "#1c1917",           // Stone-900 high contrast dark gray-black for reading
     textMuted: "#44403c",      // Stone-700 muted text
-    surface: "#ffffff",        // White cards
+    surface: "#ffffff",        // White cards & containers for pop-out contrast
     border: "#d6d3d1",         // Stone-300 clean subtle lines
   },
   socialLinks: {
