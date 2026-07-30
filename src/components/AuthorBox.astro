@@ -1,0 +1,114 @@
+---
+interface Props {
+  name: string;
+  bio: string;
+  avatar: string;
+  twitter?: string;
+  facebook?: string;
+  github?: string;
+  website?: string;
+}
+
+const { name, bio, avatar, twitter, facebook, github, website } = Astro.props;
+---
+
+<div class="author-box">
+  <img src={avatar} alt={name} class="author-box-avatar" />
+  <div class="author-box-content">
+    <span class="author-box-label">About the Author</span>
+    <h3 class="author-box-name">{name}</h3>
+    <p class="author-box-bio">{bio}</p>
+    
+    <div class="author-box-socials">
+      {twitter && (
+        <a href={twitter} target="_blank" rel="noopener noreferrer" aria-label={`${name}'s Twitter`}>Twitter</a>
+      )}
+      {facebook && (
+        <a href={facebook} target="_blank" rel="noopener noreferrer" aria-label={`${name}'s Facebook`}>Facebook</a>
+      )}
+      {github && (
+        <a href={github} target="_blank" rel="noopener noreferrer" aria-label={`${name}'s GitHub`}>GitHub</a>
+      )}
+      {website && (
+        <a href={website} target="_blank" rel="noopener noreferrer" aria-label={`${name}'s Website`}>Website</a>
+      )}
+    </div>
+  </div>
+</div>
+
+<style>
+  .author-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 4rem 0;
+    text-align: center;
+  }
+  
+  @media (min-width: 640px) {
+    .author-box {
+      flex-direction: row;
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+  
+  .author-box-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-primary);
+  }
+  
+  .author-box-content {
+    flex: 1;
+  }
+  
+  .author-box-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  
+  .author-box-name {
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+  
+  .author-box-bio {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  .author-box-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .author-box-socials a {
+    color: var(--color-text-muted);
+    font-weight: 600;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 2px;
+  }
+  
+  .author-box-socials a:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+</style>

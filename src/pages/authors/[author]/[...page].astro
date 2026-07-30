@@ -1,0 +1,44 @@
+---
+import type { Page, GetStaticPathsOptions } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { getPublishedArticles } from '../../../utils/posts';
+import ArchiveLayout from '../../../layouts/ArchiveLayout.astro';
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const allArticles = await getPublishedArticles();
+  const authors = await getCollection('authors');
+  
+  return authors.flatMap(author => {
+    const authorArticles = allArticles.filter(
+      article => article.data.author.id === author.id
+    );
+    
+    return paginate(authorArticles, {
+      params: { author: author.id },
+      props: { authorName: author.data.name, authorBio: author.data.bio },
+      pageSize: 9,
+    });
+  });
+}
+
+interface Props {
+  page: Page<CollectionEntry<'articles'>>;
+  authorName: string;
+  authorBio: string;
+}
+
+const { page, authorName, authorBio } = Astro.props;
+const title = `Articles by ${authorName}`;
+---
+
+<ArchiveLayout
+  title={title}
+  description={authorBio}
+  posts={page.data}
+  breadcrumbLabel={authorName}
+  prevUrl={page.url.prev}
+  nextUrl={page.url.next}
+  current={page.currentPage}
+  total={page.lastPage}
+/>

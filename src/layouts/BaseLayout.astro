@@ -1,0 +1,85 @@
+---
+import { siteConfig } from '../config/site';
+import { getSEOMetadata, type SEOProps } from '../lib/seo';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  seo?: SEOProps;
+  schemaJson?: Record<string, any> | Record<string, any>[];
+}
+
+const { seo, schemaJson } = Astro.props;
+const metadata = getSEOMetadata(seo);
+
+// Define theme variables to inject into CSS properties
+const theme = siteConfig.themeColors;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={siteConfig.favicon} />
+    
+    <!-- Primary Meta Tags -->
+    <title>{metadata.title}</title>
+    <meta name="title" content={metadata.title} />
+    <meta name="description" content={metadata.description} />
+    <link rel="canonical" href={metadata.canonical} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={metadata.type} />
+    <meta property="og:url" content={metadata.canonical} />
+    <meta property="og:title" content={metadata.title} />
+    <meta property="og:description" content={metadata.description} />
+    <meta property="og:image" content={metadata.imageUrl} />
+    <meta property="og:site_name" content={metadata.siteName} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content={metadata.twitterCard} />
+    <meta property="twitter:url" content={metadata.canonical} />
+    <meta property="twitter:title" content={metadata.title} />
+    <meta property="twitter:description" content={metadata.description} />
+    <meta property="twitter:image" content={metadata.imageUrl} />
+
+    <!-- Dynamic Theme Custom Variables Injection -->
+    <style define:vars={{
+      colorPrimary: theme.primary,
+      colorPrimaryHover: theme.primaryHover,
+      colorSecondary: theme.secondary,
+      colorAccent: theme.accent,
+      colorBackground: theme.background,
+      colorText: theme.text,
+      colorTextMuted: theme.textMuted,
+      colorSurface: theme.surface,
+      colorBorder: theme.border,
+    }}>
+      :root {
+        --color-primary: var(--colorPrimary);
+        --color-primary-hover: var(--colorPrimaryHover);
+        --color-secondary: var(--colorSecondary);
+        --color-accent: var(--colorAccent);
+        --color-background: var(--colorBackground);
+        --color-text: var(--colorText);
+        --color-text-muted: var(--colorTextMuted);
+        --color-surface: var(--colorSurface);
+        --color-border: var(--colorBorder);
+      }
+    </style>
+
+    <!-- Schema JSON-LD Injection -->
+    {schemaJson && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaJson)} />
+    )}
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

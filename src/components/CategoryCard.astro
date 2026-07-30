@@ -1,0 +1,91 @@
+---
+interface Props {
+  slug: string;
+  label: string;
+  description: string;
+  color?: string;
+}
+
+const { slug, label, description, color } = Astro.props;
+const categoryColor = color || 'var(--color-primary)';
+---
+
+<a href={`/${slug}`} class="category-card" style={`--category-color: ${categoryColor}`}>
+  <div class="category-card-border"></div>
+  <div class="category-card-content">
+    <h3 class="category-card-title">{label}</h3>
+    <p class="category-card-desc">{description}</p>
+    <span class="category-card-link">
+      Explore articles
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="category-arrow"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+    </span>
+  </div>
+</a>
+
+<style>
+  .category-card {
+    position: relative;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    height: 100%;
+    transition: all 0.25s ease;
+  }
+  
+  .category-card-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background-color: var(--category-color);
+  }
+  
+  .category-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--category-color);
+    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.4);
+  }
+  
+  .category-card-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .category-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+  
+  .category-card-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+  
+  .category-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--category-color);
+    margin-top: auto;
+  }
+  
+  .category-arrow {
+    transition: transform 0.2s ease;
+  }
+  
+  .category-card:hover .category-arrow {
+    transform: translateX(4px);
+  }
+</style>

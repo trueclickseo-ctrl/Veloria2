@@ -1,0 +1,137 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Pagination from '../components/Pagination.astro';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  posts: CollectionEntry<'articles'>[];
+  breadcrumbLabel?: string;
+  // Pagination
+  prevUrl?: string;
+  nextUrl?: string;
+  current?: number;
+  total?: number;
+}
+
+const { 
+  title, 
+  description, 
+  posts, 
+  breadcrumbLabel,
+  prevUrl,
+  nextUrl,
+  current,
+  total 
+} = Astro.props;
+
+const seoProps = {
+  title,
+  description,
+};
+---
+
+<BaseLayout seo={seoProps}>
+  <Breadcrumbs title={breadcrumbLabel || title} />
+  
+  <div class="archive-page section container">
+    <header class="archive-header">
+      <h1 class="archive-title">{title}</h1>
+      <p class="archive-description">{description}</p>
+    </header>
+    
+    {posts.length > 0 ? (
+      <div class="grid-cards">
+        {posts.map(post => {
+          const formattedDate = post.data.publishDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          });
+          const categoryLabel = siteConfig.categories[post.data.category.toLowerCase()]
+            ? siteConfig.categories[post.data.category.toLowerCase()].label
+            : post.data.category;
+            
+          return (
+            <article class="card">
+              <a href={`/${post.slug || post.id}`} class="card-link" aria-label={post.data.title}>
+                <img src={post.data.image} alt={post.data.title} class="card-img" />
+              </a>
+              <div class="card-content">
+                <div class="card-meta">
+                  <span class="card-category">{categoryLabel}</span>
+                  <span class="card-meta-sep">&bull;</span>
+                  <time datetime={post.data.publishDate.toISOString()}>{formattedDate}</time>
+                </div>
+                <h3 class="card-title">
+                  <a href={`/${post.slug || post.id}`}>{post.data.title}</a>
+                </h3>
+                <p class="card-desc">{post.data.description}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="empty-archive">
+        <p>No articles found matching this query.</p>
+        <a href="/" class="btn btn-primary">Return Home</a>
+      </div>
+    )}
+    
+    <Pagination prevUrl={prevUrl} nextUrl={nextUrl} current={current} total={total} />
+  </div>
+</BaseLayout>
+
+<style>
+  .archive-header {
+    margin-bottom: 3.5rem;
+    max-width: 700px;
+  }
+  
+  .archive-title {
+    font-size: 2.75rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--color-text), var(--color-text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .archive-description {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+  }
+  
+  .card-category {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .card-meta-sep {
+    margin: 0 0.5rem;
+    color: var(--color-border);
+  }
+  
+  .empty-archive {
+    text-align: center;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .empty-archive p {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+</style>

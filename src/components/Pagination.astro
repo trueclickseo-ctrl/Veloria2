@@ -1,0 +1,74 @@
+---
+interface Props {
+  prevUrl?: string;
+  nextUrl?: string;
+  current?: number;
+  total?: number;
+}
+
+const { prevUrl, nextUrl, current, total } = Astro.props;
+---
+
+{(prevUrl || nextUrl) && (
+  <nav class="pagination" aria-label="Pagination Navigation">
+    <div class="pagination-prev">
+      {prevUrl ? (
+        <a href={prevUrl} class="btn btn-outline pagination-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Previous
+        </a>
+      ) : (
+        <span class="btn btn-outline pagination-btn disabled" aria-disabled="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem; opacity: 0.4;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Previous
+        </span>
+      )}
+    </div>
+    
+    {current && total && (
+      <div class="pagination-info">
+        Page {current} of {total}
+      </div>
+    )}
+    
+    <div class="pagination-next">
+      {nextUrl ? (
+        <a href={nextUrl} class="btn btn-outline pagination-btn">
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      ) : (
+        <span class="btn btn-outline pagination-btn disabled" aria-disabled="true">
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem; opacity: 0.4;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </span>
+      )}
+    </div>
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 3rem;
+  }
+  
+  .pagination-btn {
+    min-width: 120px;
+  }
+  
+  .pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  .pagination-info {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+</style>

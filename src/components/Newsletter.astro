@@ -1,0 +1,111 @@
+---
+import { siteConfig } from '../config/site';
+---
+
+<section class="newsletter-box">
+  <div class="newsletter-content">
+    <span class="newsletter-badge">Newsletter</span>
+    <h3 class="newsletter-title">Stay Updated</h3>
+    <p class="newsletter-desc">Get premium guides, breaking insights, and category digests from {siteConfig.siteName} delivered directly to your inbox.</p>
+  </div>
+  
+  <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing! (Mock submission success)');">
+    <input type="email" required placeholder="Enter your email address" class="newsletter-input" aria-label="Email address" />
+    <button type="submit" class="btn btn-primary newsletter-btn">Subscribe</button>
+  </form>
+</section>
+
+<style>
+  .newsletter-box {
+    background: linear-gradient(135deg, var(--color-surface) 0%, rgba(99, 102, 241, 0.05) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 4rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .newsletter-box {
+      flex-direction: row;
+      text-align: left;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+  }
+  
+  .newsletter-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  @media (min-width: 768px) {
+    .newsletter-content {
+      align-items: flex-start;
+    }
+  }
+  
+  .newsletter-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    background-color: rgba(99, 102, 241, 0.15);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+  }
+  
+  .newsletter-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .newsletter-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    max-width: 450px;
+    line-height: 1.5;
+  }
+  
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  @media (min-width: 480px) {
+    .newsletter-form {
+      flex-direction: row;
+    }
+  }
+  
+  .newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+  }
+  
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+  
+  .newsletter-btn {
+    white-space: nowrap;
+  }
+</style>

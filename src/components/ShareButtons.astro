@@ -1,0 +1,92 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+---
+
+<div class="share-buttons-container">
+  <span class="share-label">Share:</span>
+  <div class="share-links">
+    <a 
+      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`} 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      class="share-btn twitter"
+      aria-label="Share on Twitter"
+    >
+      Twitter
+    </a>
+    <a 
+      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`} 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      class="share-btn facebook"
+      aria-label="Share on Facebook"
+    >
+      Facebook
+    </a>
+    <a 
+      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`} 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      class="share-btn linkedin"
+      aria-label="Share on LinkedIn"
+    >
+      LinkedIn
+    </a>
+  </div>
+</div>
+
+<style>
+  .share-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .share-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  
+  .share-links {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .share-btn {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    color: #ffffff;
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  
+  .share-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+    color: #ffffff;
+  }
+  
+  .twitter {
+    background-color: #1da1f2;
+  }
+  
+  .facebook {
+    background-color: #1877f2;
+  }
+  
+  .linkedin {
+    background-color: #0a66c2;
+  }
+</style>

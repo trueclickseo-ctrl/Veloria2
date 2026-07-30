@@ -1,0 +1,64 @@
+---
+interface Props {
+  tags: string[] | Array<{ name: string; count: number }>;
+}
+
+const { tags } = Astro.props;
+---
+
+<div class="tag-list" aria-label="Tags">
+  {tags.map(tag => {
+    const isObject = typeof tag === 'object';
+    const tagName = isObject ? tag.name : tag;
+    const tagCount = isObject ? tag.count : null;
+    
+    return (
+      <a href={`/tags/${tagName.toLowerCase()}`} class="tag-badge">
+        <span class="tag-hash">#</span>
+        <span class="tag-name">{tagName}</span>
+        {tagCount !== null && (
+          <span class="tag-count">({tagCount})</span>
+        )}
+      </a>
+    );
+  })}
+</div>
+
+<style>
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .tag-badge:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: rgba(99, 102, 241, 0.05);
+    transform: translateY(-1px);
+  }
+  
+  .tag-hash {
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+  
+  .tag-count {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+</style>

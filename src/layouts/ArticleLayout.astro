@@ -1,0 +1,235 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import AuthorBox from '../components/AuthorBox.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import FAQ from '../components/FAQ.astro';
+import Newsletter from '../components/Newsletter.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import BackToTop from '../components/BackToTop.astro';
+import { getReadingTime } from '../lib/readingTime';
+import { getRelatedArticles } from '../utils/posts';
+import { 
+  getArticleSchema, 
+  getDefinedTermSchema, 
+  getCreativeWorkSchema, 
+  getFAQSchema,
+  getBreadcrumbSchema
+} from '../lib/schema';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+
+// Resolve Author reference
+const authorEntry = await getEntry(article.data.author);
+const authorData = authorEntry ? authorEntry.data : {
+  name: "Veloria Editors",
+  bio: "Curators of premium lifestyle, finance, and wellness articles.",
+  avatar: "/assets/authors/default.jpg",
+};
+
+// Calculate reading time
+const readingTimeText = getReadingTime(article.body);
+
+// Resolve dynamic URLs
+const articleUrl = `${siteConfig.siteUrl}/${article.slug || article.id}`;
+const authorUrl = authorEntry ? `${siteConfig.siteUrl}/authors/${authorEntry.id}` : undefined;
+
+// Calculate related posts
+const relatedPosts = await getRelatedArticles(article, 3);
+
+// Generate schemas based on schemaType
+const schemas: Record<string, any>[] = [];
+
+// Base Breadcrumbs Schema
+schemas.push(getBreadcrumbSchema([
+  { name: 'Home', item: siteConfig.siteUrl },
+  { name: siteConfig.categories[article.data.category.toLowerCase()]?.label || article.data.category, item: `${siteConfig.siteUrl}/${article.data.category.toLowerCase()}` },
+  { name: article.data.title, item: articleUrl }
+]));
+
+// Type-specific Schema
+if (article.data.schemaType === 'Article') {
+  schemas.push(getArticleSchema({
+    title: article.data.title,
+    description: article.data.description,
+    publishDate: article.data.publishDate,
+    updatedDate: article.data.updatedDate,
+    image: article.data.image,
+    url: articleUrl,
+    authorName: authorData.name,
+    authorUrl,
+    category: article.data.category,
+  }));
+} else if (article.data.schemaType === 'DefinedTerm') {
+  schemas.push(getDefinedTermSchema({
+    name: article.data.title,
+    description: article.data.description,
+    url: articleUrl,
+  }));
+} else if (article.data.schemaType === 'CreativeWork') {
+  schemas.push(getCreativeWorkSchema({
+    name: article.data.title,
+    description: article.data.description,
+    url: articleUrl,
+    authorName: authorData.name,
+    publishDate: article.data.publishDate,
+  }));
+}
+
+// Conditionally append FAQ Schema
+if (article.data.faq && article.data.faq.length > 0) {
+  schemas.push(getFAQSchema(article.data.faq));
+}
+
+const seoProps = {
+  title: article.data.title,
+  description: article.data.description,
+  image: article.data.image,
+  canonicalUrl: articleUrl,
+  type: 'article' as const,
+  publishDate: article.data.publishDate,
+  updatedDate: article.data.updatedDate,
+  authorName: authorData.name,
+};
+---
+
+<BaseLayout seo={seoProps} schemaJson={schemas}>
+  <Breadcrumbs category={article.data.category} title={article.data.title} />
+  
+  <article class="article-detail-page container" data-pagefind-body>
+    <ArticleHero
+      title={article.data.title}
+      description={article.data.description}
+      publishDate={article.data.publishDate}
+      updatedDate={article.data.updatedDate}
+      category={article.data.category}
+      image={article.data.image}
+      authorName={authorData.name}
+      authorAvatar={authorData.avatar}
+      readingTime={readingTimeText}
+    />
+    
+    <div class="article-layout-grid">
+      <div class="article-main-content">
+        <!-- Conditional Table of Contents -->
+        <TableOfContents headings={headings} />
+        
+        <!-- Main Article Content Body -->
+        <div class="prose-content">
+          <Content />
+        </div>
+        
+        <!-- Conditional FAQ Accordion -->
+        <FAQ faqs={article.data.faq} />
+        
+        <!-- Share Buttons -->
+        <ShareButtons title={article.data.title} url={articleUrl} />
+        
+        <!-- Author Profile Box -->
+        <AuthorBox
+          name={authorData.name}
+          bio={authorData.bio}
+          avatar={authorData.avatar}
+          twitter={authorData.twitter}
+          facebook={authorData.facebook}
+          github={authorData.github}
+          website={authorData.website}
+        />
+        
+        <!-- Related Posts Grid -->
+        <RelatedPosts posts={relatedPosts} />
+      </div>
+      
+      <aside class="article-sidebar">
+        <Newsletter />
+      </aside>
+    </div>
+  </article>
+  
+  <BackToTop />
+</BaseLayout>
+
+<style>
+  .article-detail-page {
+    margin-top: 1.5rem;
+  }
+  
+  .article-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .article-layout-grid {
+      grid-template-columns: 3fr 1fr;
+    }
+  }
+  
+  .prose-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+  }
+  
+  .prose-content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+  
+  .prose-content :global(a) {
+    border-bottom: 1px solid var(--color-primary);
+  }
+  
+  .prose-content :global(a:hover) {
+    border-bottom-color: var(--color-primary-hover);
+  }
+  
+  .prose-content :global(ul), .prose-content :global(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+  }
+  
+  .prose-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose-content :global(blockquote) {
+    border-left: 4px solid var(--color-primary);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--color-text);
+  }
+  
+  .prose-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 2.5rem 0;
+    border: 1px solid var(--color-border);
+  }
+  
+  .article-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .article-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+  }
+</style>

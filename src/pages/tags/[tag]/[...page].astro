@@ -1,0 +1,43 @@
+---
+import type { Page, GetStaticPathsOptions } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getPublishedArticles, getAllTags } from '../../../utils/posts';
+import ArchiveLayout from '../../../layouts/ArchiveLayout.astro';
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const allArticles = await getPublishedArticles();
+  const tags = await getAllTags();
+  
+  return tags.flatMap(tag => {
+    const tagArticles = allArticles.filter(
+      article => article.data.tags.map(t => t.toLowerCase()).includes(tag.name.toLowerCase())
+    );
+    
+    return paginate(tagArticles, {
+      params: { tag: tag.name.toLowerCase() },
+      props: { tagName: tag.name },
+      pageSize: 9,
+    });
+  });
+}
+
+interface Props {
+  page: Page<CollectionEntry<'articles'>>;
+  tagName: string;
+}
+
+const { page, tagName } = Astro.props;
+const title = `Tag: #${tagName}`;
+const description = `Articles and guides tagged with #${tagName}.`;
+---
+
+<ArchiveLayout
+  title={title}
+  description={description}
+  posts={page.data}
+  breadcrumbLabel={tagName}
+  prevUrl={page.url.prev}
+  nextUrl={page.url.next}
+  current={page.currentPage}
+  total={page.lastPage}
+/>

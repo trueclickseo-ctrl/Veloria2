@@ -1,0 +1,107 @@
+---
+import { siteConfig } from '../config/site';
+---
+
+<header class="site-header">
+  <div class="container header-container">
+    <a href="/" class="logo-link">
+      {siteConfig.logo.src ? (
+        <span class="logo-text">{siteConfig.siteName}</span>
+      ) : (
+        <span class="logo-text">{siteConfig.siteName}</span>
+      )}
+    </a>
+    
+    <nav class="header-nav">
+      <ul class="nav-list">
+        {siteConfig.navigation.header.map(item => (
+          <li>
+            <a href={item.href} class="nav-link">{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    
+    <div class="header-actions">
+      <a href="/search" class="search-icon-btn" aria-label="Search articles">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+  }
+  
+  .logo-link {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--color-text);
+    letter-spacing: -0.05em;
+  }
+  
+  .logo-text {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .header-nav {
+    display: none;
+  }
+  
+  .nav-list {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  
+  .nav-link {
+    color: var(--color-text-muted);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+  
+  .search-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .search-icon-btn:hover {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+  }
+  
+  @media (min-width: 768px) {
+    .header-nav {
+      display: block;
+    }
+  }
+</style>

@@ -1,0 +1,332 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import Newsletter from '../components/Newsletter.astro';
+import TagList from '../components/TagList.astro';
+import { getPublishedArticles, getAllTags } from '../utils/posts';
+import { siteConfig } from '../config/site';
+import { getOrganizationSchema, getWebSiteSchema } from '../lib/schema';
+
+const allArticles = await getPublishedArticles();
+const featuredArticle = allArticles.find(article => article.data.featured) || allArticles[0];
+const recentArticles = allArticles.filter(article => article.id !== featuredArticle?.id).slice(0, 6);
+const tags = await getAllTags();
+
+// Dynamic JSON-LD structured schemas
+const schemas = [
+  getOrganizationSchema(),
+  getWebSiteSchema(),
+];
+
+const formattedFeaturedDate = featuredArticle?.data.publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout schemaJson={schemas}>
+  <!-- Hero Section with Highlighted Featured Post -->
+  {featuredArticle && (
+    <section class="home-hero section container">
+      <div class="hero-grid">
+        <div class="hero-image-pane">
+          <a href={`/${featuredArticle.slug || featuredArticle.id}`}>
+            <img src={featuredArticle.data.image} alt={featuredArticle.data.title} class="hero-img" />
+          </a>
+        </div>
+        <div class="hero-text-pane">
+          <span class="featured-badge">Featured Article</span>
+          <a href={`/${featuredArticle.data.category.toLowerCase()}`} class="featured-category">
+            {siteConfig.categories[featuredArticle.data.category.toLowerCase()]?.label || featuredArticle.data.category}
+          </a>
+          <h2 class="featured-title">
+            <a href={`/${featuredArticle.slug || featuredArticle.id}`}>{featuredArticle.data.title}</a>
+          </h2>
+          <p class="featured-desc">{featuredArticle.data.description}</p>
+          <div class="featured-meta">
+            <time datetime={featuredArticle.data.publishDate.toISOString()}>{formattedFeaturedDate}</time>
+            <span class="meta-separator">&bull;</span>
+            <a href={`/${featuredArticle.slug || featuredArticle.id}`} class="read-more-link">Read Article &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Categories Navigation Cards -->
+  <section class="home-categories section container">
+    <div class="section-header">
+      <h2 class="section-title">Explore by Niche</h2>
+      <p class="section-desc">Browse our curated guides and tips grouped by interest.</p>
+    </div>
+    
+    <div class="grid-cards">
+      {Object.entries(siteConfig.categories).map(([slug, meta]) => (
+        <CategoryCard
+          slug={slug}
+          label={meta.label}
+          description={meta.description}
+          color={meta.color}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Recent Articles & Sidebar -->
+  <section class="home-recent section container">
+    <div class="home-layout-columns">
+      <div class="home-main-col">
+        <h2 class="section-title">Latest Articles</h2>
+        <div class="grid-cards" style="grid-template-columns: 1fr;">
+          {recentArticles.map(article => {
+            const dateStr = article.data.publishDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            });
+            return (
+              <article class="horizontal-card">
+                <a href={`/${article.slug || article.id}`} class="horiz-img-link">
+                  <img src={article.data.image} alt={article.data.title} class="horiz-img" />
+                </a>
+                <div class="horiz-content">
+                  <div class="card-meta">
+                    <span class="card-category">
+                      {siteConfig.categories[article.data.category.toLowerCase()]?.label || article.data.category}
+                    </span>
+                    <span class="meta-separator">&bull;</span>
+                    <time datetime={article.data.publishDate.toISOString()}>{dateStr}</time>
+                  </div>
+                  <h3 class="horiz-title">
+                    <a href={`/${article.slug || article.id}`}>{article.data.title}</a>
+                  </h3>
+                  <p class="horiz-desc">{article.data.description}</p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+      
+      <aside class="home-sidebar-col">
+        <div class="sidebar-widget">
+          <h4 class="widget-title">Popular Tags</h4>
+          <TagList tags={tags.slice(0, 15)} />
+        </div>
+        <Newsletter />
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Home Hero Grid */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+  
+  .hero-image-pane {
+    height: 300px;
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-image-pane {
+      height: 450px;
+    }
+  }
+  
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .hero-text-pane {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .featured-badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #ffffff;
+    background-color: var(--color-accent);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .featured-category {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  
+  .featured-title {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .featured-title {
+      font-size: 2.25rem;
+    }
+  }
+  
+  .featured-desc {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .featured-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .meta-separator {
+    color: var(--color-border);
+  }
+  
+  .read-more-link {
+    font-weight: 700;
+  }
+  
+  /* Sections Header */
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .section-desc {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+  }
+  
+  /* Horizontal card style for latest list */
+  .horizontal-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  
+  .horizontal-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+  }
+  
+  @media (min-width: 640px) {
+    .horizontal-card {
+      flex-direction: row;
+    }
+  }
+  
+  .horiz-img-link {
+    width: 100%;
+    height: 180px;
+    flex-shrink: 0;
+  }
+  
+  @media (min-width: 640px) {
+    .horiz-img-link {
+      width: 240px;
+      height: 100%;
+    }
+  }
+  
+  .horiz-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .horiz-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .card-category {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+  
+  .horiz-title {
+    font-size: 1.35rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .horiz-desc {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  
+  /* Homepage Columns */
+  .home-layout-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .home-layout-columns {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+  
+  .sidebar-widget {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .widget-title {
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SearchComponent from '../components/Search.astro';
+
+const seoProps = {
+  title: "Search Articles",
+  description: "Find guides, wellness tips, personal finance hacks, and beauty trends by searching our complete archives.",
+};
+---
+
+<BaseLayout seo={seoProps}>
+  <Breadcrumbs title="Search" />
+  
+  <div class="search-page section container">
+    <header class="search-header">
+      <h1 class="search-title">Search Archives</h1>
+      <p class="search-desc">Looking for something specific? Search across all articles, tags, and categories instantly.</p>
+    </header>
+    
+    <SearchComponent />
+  </div>
+</BaseLayout>
+
+<style>
+  .search-header {
+    margin-bottom: 2rem;
+    max-width: 600px;
+  }
+  
+  .search-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .search-desc {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+import type { Page, GetStaticPathsOptions } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getPublishedArticles } from '../../utils/posts';
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import { siteConfig } from '../../config/site';
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const allArticles = await getPublishedArticles();
+  const categories = Object.keys(siteConfig.categories);
+  
+  return categories.flatMap(category => {
+    const categoryArticles = allArticles.filter(
+      article => article.data.category.toLowerCase() === category.toLowerCase()
+    );
+    
+    return paginate(categoryArticles, {
+      params: { category: category.toLowerCase() },
+      pageSize: 9,
+    });
+  });
+}
+
+interface Props {
+  page: Page<CollectionEntry<'articles'>>;
+}
+
+const { page } = Astro.props;
+const { category } = Astro.params;
+
+const categoryMeta = siteConfig.categories[category.toLowerCase()];
+const title = categoryMeta ? categoryMeta.label : category;
+const description = categoryMeta 
+  ? categoryMeta.description 
+  : `Browsing articles in the ${title} category.`;
+---
+
+<ArchiveLayout
+  title={title}
+  description={description}
+  posts={page.data}
+  breadcrumbLabel={title}
+  prevUrl={page.url.prev}
+  nextUrl={page.url.next}
+  current={page.currentPage}
+  total={page.lastPage}
+/>

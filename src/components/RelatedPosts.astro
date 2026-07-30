@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  posts: CollectionEntry<'articles'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+{posts.length > 0 && (
+  <section class="related-posts">
+    <h2 class="related-title">Related Articles</h2>
+    <div class="grid-cards">
+      {posts.map(post => {
+        const formattedDate = post.data.publishDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+        const categoryLabel = siteConfig.categories[post.data.category.toLowerCase()]
+          ? siteConfig.categories[post.data.category.toLowerCase()].label
+          : post.data.category;
+          
+        return (
+          <article class="card">
+            <a href={`/${post.slug || post.id}`} class="card-link" aria-label={post.data.title}>
+              <img src={post.data.image} alt={post.data.title} class="card-img" />
+            </a>
+            <div class="card-content">
+              <div class="card-meta">
+                <span class="card-category">{categoryLabel}</span>
+                <span class="card-meta-sep">&bull;</span>
+                <time datetime={post.data.publishDate.toISOString()}>{formattedDate}</time>
+              </div>
+              <h3 class="card-title">
+                <a href={`/${post.slug || post.id}`}>{post.data.title}</a>
+              </h3>
+              <p class="card-desc">{post.data.description}</p>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-posts {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .related-title {
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  
+  .card-category {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .card-meta-sep {
+    margin: 0 0.5rem;
+    color: var(--color-border);
+  }
+</style>
