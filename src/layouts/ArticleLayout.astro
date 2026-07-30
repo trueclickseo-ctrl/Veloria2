@@ -102,21 +102,10 @@ const seoProps = {
   authorName: authorData.name,
 };
 
-const subheadings = headings.filter(h => h.depth === 2);
 ---
 
 <BaseLayout seo={seoProps} schemaJson={schemas}>
   <Breadcrumbs category={article.data.category} title={article.data.title} />
-  
-  <!-- Floating Sidebar Tabs representing sections -->
-  {subheadings.length > 0 && (
-    <nav class="heading-nav-tabs">
-      <span class="nav-tabs-title">Sections</span>
-      {subheadings.map(h => (
-        <a href={`#${h.slug}`} class="tab-nav-item">{h.text}</a>
-      ))}
-    </nav>
-  )}
   
   <article class="article-detail-page container" data-pagefind-body>
     <ArticleHero
@@ -173,59 +162,10 @@ const subheadings = headings.filter(h => h.depth === 2);
   }
   
   .article-layout-grid {
-    max-width: 850px;
-    margin: 0 auto;
+    width: 100%;
   }
   
-  /* Vertical Floating side tabs layout */
-  .heading-nav-tabs {
-    position: fixed;
-    right: 2rem;
-    top: 180px;
-    display: none;
-    flex-direction: column;
-    gap: 0.75rem;
-    z-index: 50;
-    border-left: 2px solid var(--color-primary);
-    padding-left: 1rem;
-    max-width: 200px;
-  }
 
-  .nav-tabs-title {
-    font-family: system-ui, sans-serif;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    color: var(--color-accent);
-    margin-bottom: 0.25rem;
-  }
-
-  .tab-nav-item {
-    font-family: system-ui, sans-serif;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--color-text-muted);
-    transition: all 0.2s ease;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-height: 1.3;
-  }
-
-  .tab-nav-item:hover {
-    color: var(--color-primary);
-    padding-left: 0.25rem;
-  }
-
-  @media (min-width: 1350px) {
-    .heading-nav-tabs {
-      display: flex;
-    }
-  }
   
   .prose-content {
     font-family: Georgia, Cambria, serif;
