@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CategoryCard from '../components/CategoryCard.astro';
-import Newsletter from '../components/Newsletter.astro';
 import TagList from '../components/TagList.astro';
 import { getPublishedArticles, getAllTags } from '../utils/posts';
 import { siteConfig } from '../config/site';
@@ -114,7 +113,6 @@ const formattedFeaturedDate = featuredArticle?.data.publishDate.toLocaleDateStri
           <h4 class="widget-title">Popular Tags</h4>
           <TagList tags={tags.slice(0, 15)} />
         </div>
-        <Newsletter />
       </aside>
     </div>
   </section>
