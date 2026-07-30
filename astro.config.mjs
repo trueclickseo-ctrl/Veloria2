@@ -6,6 +6,7 @@ import { unified } from '@astrojs/markdown-remark';
 export default defineConfig({
   site: 'https://veloriamag.com',
   output: 'static',
+  outDir: './out',
   markdown: {
     processor: unified(),
   },
