@@ -5,7 +5,7 @@ publishDate: 2026-07-24
 author: veloria-editors
 category: celebrity
 tags: ["pop culture", "celebrity trends", "social media"]
-image: "/assets/images/celebrity.jpg"
+image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80"
 featured: false
 draft: false
 schemaType: Article

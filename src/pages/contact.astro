@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { siteConfig } from '../config/site';
+
+const seoProps = {
+  title: "Contact Us",
+  description: `Get in touch with the editorial and writing staff of ${siteConfig.siteName}.`,
+};
+---
+
+<BaseLayout seo={seoProps}>
+  <Breadcrumbs title="Contact Us" />
+  
+  <div class="container section">
+    <div class="contact-container">
+      <h1 class="page-title">Contact Us</h1>
+      <p class="contact-desc">Have a suggestion, question, or feedback about our articles? We'd love to hear from you. Fill out the form below or reach us directly via email.</p>
+      
+      <div class="contact-grid">
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent successfully! (Mock submission)');">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" required placeholder="Your Name" class="form-input" />
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" required placeholder="Your Email" class="form-input" />
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" required rows="5" placeholder="Write your message here..." class="form-textarea"></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+        
+        <div class="contact-info">
+          <div class="info-card">
+            <h3>Direct Contact</h3>
+            <p><strong>Email:</strong> contact@veloriamag.com</p>
+            <p><strong>Editorial:</strong> editors@veloriamag.com</p>
+          </div>
+          
+          <div class="info-card">
+            <h3>Office Hours</h3>
+            <p>Monday - Friday: 9:00 AM - 5:00 PM EST</p>
+            <p>We aim to respond to all inquiries within 24-48 business hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-container {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+  
+  .page-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-desc {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  @media (min-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1.5fr 1fr;
+    }
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  
+  .form-input, .form-textarea {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .info-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  
+  .info-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.25rem;
+  }
+  
+  .info-card p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+  }
+</style>

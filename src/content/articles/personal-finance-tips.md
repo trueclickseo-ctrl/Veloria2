@@ -5,7 +5,7 @@ publishDate: 2026-07-27
 author: veloria-editors
 category: finance
 tags: ["saving", "budgeting", "investing", "wealth building"]
-image: "/assets/images/finance.jpg"
+image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80"
 featured: false
 draft: false
 schemaType: Article

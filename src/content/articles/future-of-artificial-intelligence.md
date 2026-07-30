@@ -5,7 +5,7 @@ publishDate: 2026-07-26
 author: veloria-editors
 category: technology
 tags: ["ai", "emerging tech", "artificial intelligence"]
-image: "/assets/images/tech.jpg"
+image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80"
 featured: false
 draft: false
 schemaType: Article

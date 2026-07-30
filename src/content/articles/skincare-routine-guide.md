@@ -5,7 +5,7 @@ publishDate: 2026-07-29
 author: veloria-editors
 category: beauty
 tags: ["skincare", "beauty tips", "minimalism"]
-image: "/assets/images/skincare.jpg"
+image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80"
 featured: true
 draft: false
 schemaType: Article

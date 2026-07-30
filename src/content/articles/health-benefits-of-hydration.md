@@ -5,7 +5,7 @@ publishDate: 2026-07-28
 author: veloria-editors
 category: health
 tags: ["wellness", "hydration", "healthy living"]
-image: "/assets/images/hydration.jpg"
+image: "https://images.unsplash.com/photo-1548839130-3fd2e291af8f?auto=format&fit=crop&w=800&q=80"
 featured: false
 draft: false
 schemaType: Article

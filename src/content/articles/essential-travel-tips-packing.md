@@ -5,7 +5,7 @@ publishDate: 2026-07-25
 author: veloria-editors
 category: travel
 tags: ["travel hacks", "packing list", "minimalism"]
-image: "/assets/images/travel.jpg"
+image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80"
 featured: false
 draft: false
 schemaType: Article

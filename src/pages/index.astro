@@ -78,7 +78,7 @@ const formattedFeaturedDate = featuredArticle?.data.publishDate.toLocaleDateStri
     <div class="home-layout-columns">
       <div class="home-main-col">
         <h2 class="section-title">Latest Articles</h2>
-        <div class="grid-cards" style="grid-template-columns: 1fr;">
+        <div class="recent-grid-cards">
           {recentArticles.map(article => {
             const dateStr = article.data.publishDate.toLocaleDateString('en-US', {
               year: 'numeric',
@@ -86,11 +86,11 @@ const formattedFeaturedDate = featuredArticle?.data.publishDate.toLocaleDateStri
               day: 'numeric',
             });
             return (
-              <article class="horizontal-card">
-                <a href={`/${article.slug || article.id}`} class="horiz-img-link">
-                  <img src={article.data.image} alt={article.data.title} class="horiz-img" />
+              <article class="card">
+                <a href={`/${article.slug || article.id}`} class="card-link" aria-label={article.data.title}>
+                  <img src={article.data.image} alt={article.data.title} class="card-img" />
                 </a>
-                <div class="horiz-content">
+                <div class="card-content">
                   <div class="card-meta">
                     <span class="card-category">
                       {siteConfig.categories[article.data.category.toLowerCase()]?.label || article.data.category}
@@ -98,10 +98,10 @@ const formattedFeaturedDate = featuredArticle?.data.publishDate.toLocaleDateStri
                     <span class="meta-separator">&bull;</span>
                     <time datetime={article.data.publishDate.toISOString()}>{dateStr}</time>
                   </div>
-                  <h3 class="horiz-title">
+                  <h3 class="card-title">
                     <a href={`/${article.slug || article.id}`}>{article.data.title}</a>
                   </h3>
-                  <p class="horiz-desc">{article.data.description}</p>
+                  <p class="card-desc">{article.data.description}</p>
                 </div>
               </article>
             );
@@ -234,72 +234,17 @@ const formattedFeaturedDate = featuredArticle?.data.publishDate.toLocaleDateStri
     font-size: 1.05rem;
   }
   
-  /* Horizontal card style for latest list */
-  .horizontal-card {
-    display: flex;
-    flex-direction: column;
+  /* Recent articles grid rules */
+  .recent-grid-cards {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1.5rem;
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  
-  .horizontal-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-primary);
   }
   
   @media (min-width: 640px) {
-    .horizontal-card {
-      flex-direction: row;
+    .recent-grid-cards {
+      grid-template-columns: repeat(2, 1fr);
     }
-  }
-  
-  .horiz-img-link {
-    width: 100%;
-    height: 180px;
-    flex-shrink: 0;
-  }
-  
-  @media (min-width: 640px) {
-    .horiz-img-link {
-      width: 240px;
-      height: 100%;
-    }
-  }
-  
-  .horiz-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .horiz-content {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .card-category {
-    color: var(--color-primary);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-  }
-  
-  .horiz-title {
-    font-size: 1.35rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .horiz-desc {
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-    line-height: 1.4;
   }
   
   /* Homepage Columns */
