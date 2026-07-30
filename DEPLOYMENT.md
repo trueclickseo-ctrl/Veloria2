@@ -1,22 +1,22 @@
 # Deployment Guide: Veloria Magazine
 
-This repository is configured to build and deploy automatically to Hostinger static hosting (`public_html`) on every push to the `main` branch.
+This repository is configured to build and deploy automatically to Hostinger static hosting (`public_html`) via secure SFTP on every push to the `main` branch.
 
 ## Setting Up GitHub Secrets
 
-To allow the GitHub Actions workflow to deploy to Hostinger, you must add three secrets in your GitHub repository settings:
+To allow the GitHub Actions workflow to deploy to Hostinger using SFTP, you must add these secrets in your GitHub repository settings:
 
 1. Go to your repository on GitHub.
 2. Navigate to **Settings** > **Secrets and variables** > **Actions**.
 3. Click on **New repository secret**.
 4. Add the following secrets:
-   - `HOSTINGER_FTP_HOST`: The FTP server hostname (e.g., `ftp.veloriamag.com` or Hostinger's FTP IP).
-   - `HOSTINGER_FTP_USERNAME`: Your FTP account username.
-   - `HOSTINGER_FTP_PASSWORD`: Your FTP account password.
+   - `HOSTINGER_FTP_HOST`: The SFTP server hostname (usually `ssh.hostinger.com` or your domain name).
+   - `HOSTINGER_FTP_USERNAME`: Your Hostinger SSH/SFTP username.
+   - `HOSTINGER_SSH_PRIVATE_KEY`: The **private key** corresponding to the public key you added to Hostinger (begins with `-----BEGIN OPENSSH PRIVATE KEY-----`).
 
 ## Manual Deployment Trigger
 
-You can also trigger the build and deploy pipeline manually:
+You can trigger the build and deploy pipeline manually:
 1. Go to the **Actions** tab in your GitHub repository.
 2. Select the **Deploy Website to Hostinger** workflow from the left sidebar.
 3. Click the **Run workflow** dropdown and select the branch (e.g., `main`).
