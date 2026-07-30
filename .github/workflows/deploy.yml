@@ -25,12 +25,11 @@ jobs:
         run: npm run build
 
       - name: Deploy via SFTP (SSH Key)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.HOSTINGER_FTP_HOST }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          ssh_private_key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           port: 22
-          protocol: sftp
-          local-dir: ./dist/
-          server-dir: ./public_html/
-          ssh-private-key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+          local_path: './dist/*'
+          remote_path: './public_html/'
