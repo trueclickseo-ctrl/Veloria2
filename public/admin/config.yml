@@ -1,0 +1,25 @@
+backend:
+  name: github
+  repo: trueclickseo-ctrl/Veloria2
+  branch: main
+  site_domain: veloriamag.com
+
+media_folder: "public/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "articles"
+    label: "Articles"
+    folder: "src/content/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Publish Date", name: "publishDate", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Category", name: "category", widget: "select", options: ["health", "beauty", "finance", "technology", "travel", "celebrity"] }
+      - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Author ID", name: "author", widget: "hidden", default: "veloria-editors" }
+      - { label: "Featured Post", name: "featured", widget: "boolean", default: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown" }
