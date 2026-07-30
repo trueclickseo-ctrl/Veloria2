@@ -1,14 +1,20 @@
 ---
 import { siteConfig } from '../config/site';
-import Newsletter from './Newsletter.astro';
 
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <!-- Newsletter added to footer -->
-  <div class="container footer-newsletter-wrapper">
-    <Newsletter />
+  <!-- Low-profile inline Newsletter -->
+  <div class="container footer-newsletter-section">
+    <div class="footer-newsletter-content">
+      <h3 class="footer-newsletter-title">Subscribe to our newsletter</h3>
+      <p class="footer-newsletter-desc">Get the latest articles sent straight to your inbox.</p>
+    </div>
+    <form class="footer-newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+      <input type="email" required placeholder="Your email address" class="footer-newsletter-input" aria-label="Email address" />
+      <button type="submit" class="btn btn-primary footer-newsletter-btn">Subscribe</button>
+    </form>
   </div>
 
   <div class="container footer-container">
@@ -63,12 +69,66 @@ const currentYear = new Date().getFullYear();
     color: var(--color-text-muted);
   }
   
-  .footer-newsletter-wrapper :global(.newsletter-box) {
-    margin: 0 0 3.5rem 0 !important;
+  /* Sleek Horizontal Footer Newsletter */
+  .footer-newsletter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
     border-bottom: 1px solid var(--color-border);
-    padding-bottom: 3.5rem;
-    background-color: transparent !important;
-    border: none !important;
+  }
+
+  @media (min-width: 768px) {
+    .footer-newsletter-section {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
+    }
+  }
+
+  .footer-newsletter-content {
+    flex: 1;
+  }
+
+  .footer-newsletter-title {
+    font-family: Georgia, serif;
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .footer-newsletter-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .footer-newsletter-input {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    color: var(--color-text);
+    font-size: 0.9rem;
+  }
+
+  .footer-newsletter-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .footer-newsletter-btn {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.8rem;
   }
 
   .footer-container {
