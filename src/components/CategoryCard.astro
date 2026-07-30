@@ -27,7 +27,7 @@ const categoryColor = color || 'var(--color-primary)';
     position: relative;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -48,7 +48,6 @@ const categoryColor = color || 'var(--color-primary)';
   .category-card:hover {
     transform: translateY(-4px);
     border-color: var(--category-color);
-    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.4);
   }
   
   .category-card-content {

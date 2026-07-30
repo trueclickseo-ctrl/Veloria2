@@ -56,15 +56,15 @@ export const siteConfig: SiteConfig = {
   },
   favicon: "/favicon.svg",
   themeColors: {
-    primary: "#4f46e5",        // Indigo-600
-    primaryHover: "#4338ca",   // Indigo-700
-    secondary: "#059669",      // Emerald-600
-    accent: "#e11d48",         // Rose-600
-    background: "#f8fafc",     // Slate-50 (Clean light background)
-    text: "#0f172a",           // Slate-900 (High-contrast dark text)
-    textMuted: "#475569",      // Slate-600 (Muted gray-blue)
-    surface: "#ffffff",        // White (Cards, Header, Footer surfaces)
-    border: "#e2e8f0",         // Slate-200 (Soft light borders)
+    primary: "#111111",        // Deep charcoal/black
+    primaryHover: "#2d2d2d",   // Soft charcoal
+    secondary: "#78350f",      // Warm amber/brown
+    accent: "#881337",         // Deep editorial rose/burgundy
+    background: "#fbfbf9",     // Elegant warm cream paper tone
+    text: "#1c1917",           // Stone-900 high contrast dark gray-black for reading
+    textMuted: "#44403c",      // Stone-700 muted text
+    surface: "#ffffff",        // White cards
+    border: "#d6d3d1",         // Stone-300 clean subtle lines
   },
   socialLinks: {
     twitter: "https://twitter.com/veloriamag",
