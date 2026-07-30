@@ -86,7 +86,6 @@ export const siteConfig: SiteConfig = {
       { label: "Terms of Service", href: "/terms" },
       { label: "Contact Us", href: "/contact" },
       { label: "Search", href: "/search" },
-      { label: "RSS Feed", href: "/rss.xml" },
     ],
   },
   organizationInfo: {
